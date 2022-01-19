@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using System;
+using OnlineShop.Domain.Services.Interfaces.Base;
 using OnlineStore.Domain.Core.Entities;
 
-namespace OnlineStore.Domain.Core.Interfaces.Base
+namespace OnlineShop.Domain.Services.Interfaces
 {
     public interface IProductRepository : IRepository<Product> 
     {
+
     }
 }
