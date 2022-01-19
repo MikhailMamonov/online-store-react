@@ -10,7 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using OnlineShop.Domain.Services.Interfaces.Base;
+using OnlineStore.Infrastructure.Data;
 using VueCliMiddleware;
 
 namespace OnlineStore
@@ -28,7 +30,20 @@ namespace OnlineStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSpaStaticFiles(configuration =>
+
+            services.AddDbContext<EfDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("OnlineStoreDatabase")));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            #region dependencyInjection
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            # endregion
+
+
+
+services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
             });
