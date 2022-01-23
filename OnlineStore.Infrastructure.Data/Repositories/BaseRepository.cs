@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using OnlineShop.Domain.Services.Interfaces.Base;
 using OnlineStore.Domain.Core.Entities.Base;
+using OnlineStore.Domain.Core.Repositories.Base;
 
 namespace OnlineStore.Infrastructure.Data.Repositories
 {
@@ -26,17 +26,17 @@ namespace OnlineStore.Infrastructure.Data.Repositories
         }
 
 
-        public virtual Task<IEnumerable<T>> FindAll()
+        public virtual Task<IEnumerable<T>> FindAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<T> FindById(Guid id)
+        public virtual async Task<T> FindByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public virtual async Task<bool> Create(T entity)
+        public virtual async Task<bool> CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             return true;
@@ -47,12 +47,18 @@ namespace OnlineStore.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public virtual Task<bool> Delete(Guid id)
+        public virtual Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
+        public virtual async Task<bool> CreateAsync(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            return true;
+        }
+
+        public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }

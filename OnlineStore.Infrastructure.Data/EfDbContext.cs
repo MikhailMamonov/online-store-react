@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Domain.Core.Entities;
 using OnlineStore.Infrastructure.Data.Configurations;
 
@@ -15,9 +16,13 @@ namespace OnlineStore.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
+        
+        public DbSet<CartItem> ShoppingCartItems { get; set; }
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new ProductsConfiguration());
+            modelBuilder.ApplyConfiguration(new OrdersConfiguration());
+        }
+
     }
 }

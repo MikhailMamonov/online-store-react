@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using OnlineShop.Domain.Services.Interfaces;
-
 using OnlineStore.Domain.Core.Entities;
+using OnlineStore.Domain.Core.Repositories;
 
 namespace OnlineStore.Infrastructure.Data.Repositories
 {
-    public class ProductRepository : BaseRepository<Product>, IProductRepository
+    public class ProductsRepository : BaseRepository<Product>, IProductsRepository
     {
-        public ProductRepository(EfDbContext dbContext, ILogger logger) : base(dbContext, logger)
+        public ProductsRepository(EfDbContext dbContext, ILogger logger) : base(dbContext, logger)
         {
         }
 
-        public override async Task<IEnumerable<Product>> FindAll()
+        public override async Task<IEnumerable<Product>> FindAllAsync()
         {
             try
             {
@@ -27,7 +25,7 @@ namespace OnlineStore.Infrastructure.Data.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Repo} FindAll method error", typeof(ProductRepository));
+                _logger.LogError(e, "{Repo} FindAll method error", typeof(ProductsRepository));
                 return new List<Product>();
             }
         }
@@ -39,7 +37,7 @@ namespace OnlineStore.Infrastructure.Data.Repositories
                 var existedProduct =await _dbSet.Where(product => product.Id == entity.Id)
                     .FirstOrDefaultAsync();
                 if (existedProduct == null)
-                    return await Create(entity);
+                    return await CreateAsync(entity);
                 
                 existedProduct.Name = entity.Name;
                 existedProduct.Image = entity.Image;
@@ -53,12 +51,12 @@ namespace OnlineStore.Infrastructure.Data.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Repo} UpdateAsync method error", typeof(ProductRepository));
+                _logger.LogError(e, "{Repo} UpdateAsync method error", typeof(ProductsRepository));
                 return false;
             }
         }
 
-        public override async Task<bool>  Delete(Guid id)
+        public override async Task<bool>  DeleteAsync(int id)
         {
             try
             {
@@ -74,7 +72,7 @@ namespace OnlineStore.Infrastructure.Data.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Repo} Delete method error", typeof(ProductRepository));
+                _logger.LogError(e, "{Repo} Delete method error", typeof(ProductsRepository));
                 return false;
             }
         }
