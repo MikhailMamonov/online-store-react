@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 
-namespace OnlineShop.Domain.Services.Interfaces.Base
+namespace OnlineStore.Domain.Core.Repositories.Base
 {
     public interface IUnitOfWork
     {
-        IProductRepository Products { get; }
+        IProductsRepository Products { get; }
 
-        IOrderRepository Orders { get; }
+        IOrdersRepository Orders { get; }
+
+        IShoppingCartItemsRepository ShoppingCartItems { get; }
 
         Task CompleteAsync();
     }

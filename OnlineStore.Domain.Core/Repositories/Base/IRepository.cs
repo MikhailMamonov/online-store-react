@@ -4,20 +4,22 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using OnlineStore.Domain.Core.Entities.Base;
 
-namespace OnlineShop.Domain.Services.Interfaces.Base
+namespace OnlineStore.Domain.Core.Repositories.Base
 {
     public interface IRepository<T>  where T : Entity
     {
-        public Task<IEnumerable<T>> FindAll();
+        Task<IEnumerable<T>> FindAllAsync();
 
-        public Task<T> FindById(int id);
+        Task<T> FindByIdAsync(int id);
 
-        public Task<bool> Create(T entity);
+        Task<bool> CreateAsync(T entity);
 
-        public Task<bool> Update(T entity);
+        Task<bool> UpdateAsync(T entity);
 
-        public Task<bool> Delete(int id);
+        Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate);
+        Task<bool> CreateAsync(IEnumerable<T> entities);
+
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
     }
 }

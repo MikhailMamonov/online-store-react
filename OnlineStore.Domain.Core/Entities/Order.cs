@@ -18,5 +18,9 @@ namespace OnlineStore.Domain.Core.Entities
         public decimal OrderTotal { get; set; }
 
         public DateTime OrderPlaced { get; set; }
+
+        public int UserId { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
