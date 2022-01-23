@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using OnlineShop.Domain.Services.Interfaces.Base;
 using OnlineStore.Domain.Core.Entities;
+using OnlineStore.Domain.Core.Repositories.Base;
 
 
 namespace OnlineStore.Controllers
@@ -29,14 +29,14 @@ namespace OnlineStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var products = await _unitOfWork.Products.FindAll();
+            var products = await _unitOfWork.Products.FindAllAsync();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem(int id)
         {
-            var item = await _unitOfWork.Products.FindById(id);
+            var item = await _unitOfWork.Products.FindByIdAsync(id);
 
             if (item == null)
                 return NotFound();
@@ -49,70 +49,38 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _unitOfWork.Products.Create(product);
+                
+                await _unitOfWork.Products.CreateAsync(product);
                 await _unitOfWork.CompleteAsync();
-                return CreatedAtAction("GetItem", new { user.Id }, user);
+                return CreatedAtAction("GetItem", new { product.Id }, product);
             }
 
-            
-            return View();
+            return new JsonResult("Somethign Went wrong") { StatusCode = 500 };
         }
 
-        // POST: ProductsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateItem(int id, Product product)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                if (id != product.Id)
+                    return BadRequest();
+                await _unitOfWork.Products.UpdateAsync(product);
+                await _unitOfWork.CompleteAsync();
+                return NoContent();
 
-        // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: ProductsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: ProductsController/Delete/5
-        [HttpPost]
+        [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var product = await _unitOfWork.Products.FindByIdAsync(id);
+            if (product == null)
+                return BadRequest();
+            await _unitOfWork.Products.DeleteAsync(id);
+            await _unitOfWork.CompleteAsync();
+            return Ok(product);
         }
     }
 }

@@ -10,8 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using OnlineShop.Domain.Services.Interfaces.Base;
+using Microsoft.OpenApi.Models;
+using OnlineStore.Domain.Core.Repositories.Base;
 using OnlineStore.Infrastructure.Data;
 using VueCliMiddleware;
 
@@ -31,6 +33,8 @@ namespace OnlineStore
         {
             services.AddControllers();
 
+            //services.AddSession();
+
             services.AddDbContext<EfDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("OnlineStoreDatabase")));
@@ -39,11 +43,24 @@ namespace OnlineStore
 
             #region dependencyInjection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             # endregion
 
 
+            #region Swagger
+            services.AddSwaggerGen(c =>
+            {
+                //c.IncludeXmlComments(string.Format(@"{0}\OnlineStore.xml", System.AppDomain.CurrentDomain.BaseDirectory));
+                //c.SwaggerDoc("v1", new OpenApiInfo
+                //{
+                //    Version = "v1",
+                //    Title = "OnlineShopApi",
+                //});
+            });
+            #endregion
 
-services.AddSpaStaticFiles(configuration =>
+
+            services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
             });
@@ -57,6 +74,7 @@ services.AddSpaStaticFiles(configuration =>
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSession();
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();
@@ -65,6 +83,17 @@ services.AddSpaStaticFiles(configuration =>
             {
                 endpoints.MapControllers();
             });
+
+            #region Swagger
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineStore");
+            });
+            #endregion
 
             app.UseSpa(spa =>
             {

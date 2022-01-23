@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace OnlineStore.Services.Contracts
+namespace OnlineStore.Services.Contracts.Orders
 {
-    public class OrderDto
+    public class CreateOrderViewModel
     {
         public string ZipCode { get; set; }
 
