@@ -3,14 +3,14 @@
     <!-- <v-catalog-marketing> </v-catalog-marketing> -->
     <h3>All Products</h3>
     <v-row>
-      <v-col v-for="product in filteredProducts" :key="product.id">
-        <b-card-text>{{ product.name }} </b-card-text>
+      <v-col>
+        All Products
       </v-col>
     </v-row>
     <h3>Best Products</h3>
     <v-row>
-      <v-col v-for="product in filteredProducts" :key="product.id">
-        <v-card-text>{{ product.id }} </v-card-text>
+      <v-col>
+        Filtered Products
       </v-col>
     </v-row>
   </v-container>

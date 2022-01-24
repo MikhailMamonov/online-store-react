@@ -1,26 +1,50 @@
 <template>
   <v-app>
-    <v-card class="overflow-hidden">
-      <v-header></v-header>
-      <v-main>
-        <v-container fluid>
-          <router-view />
-        </v-container>
-      </v-main>
-      <v-footer app>
-        <!-- -->
-      </v-footer>
-    </v-card>
+    <v-app-bar
+      app
+      absolute
+      color="deep-purple accent-4"
+      dense
+      dark
+      elevation="10"
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Title</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-main>
+      <v-container>
+        <v-row>
+          <v-col><v-navbar></v-navbar></v-col>
+          <v-col><router-view /></v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+    <v-footer app>
+      <!-- -->
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-// import { mapActions } from "vuex";
-
-import vHeader from "./components/v-header";
+import vNavbar from "./components/v-navbar.vue";
 export default {
   name: "App",
-  components: { vHeader },
+  components: { vNavbar },
   data() {
     return {
       user: null,
@@ -47,6 +71,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

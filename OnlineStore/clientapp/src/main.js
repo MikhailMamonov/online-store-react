@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import App from "./App.vue";
 import router from "./router/index";
 import { store } from "./store/index";
-import vuetify from "@/plugins/vuetify"; // path to vuetify export
+import vuetify from "@/plugins/vuetify"; // path to vueimport
 
 Vue.use(Vuex);
 

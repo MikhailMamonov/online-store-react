@@ -5,6 +5,7 @@
     <v-admin-product :products="products"></v-admin-product>
 
     <v-admin-user :users="users"></v-admin-user> -->
+    joijoijo
   </v-container>
 </template>
 
